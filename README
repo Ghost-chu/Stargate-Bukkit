@@ -1,15 +1,35 @@
 =============
+   Status
+=============
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                                                                                      !!
+!!                THIS FORK IS STILL IN DEVELOPMENT! WORK IN PROGRESS!                  !!
+!!               THE MOST RECENT VERSION IS *VERY UNSTABLE* FOR 1.13/14!                !!
+!!                                                                                      !!
+!!         Version 0.9.0.0 is the only stable release currently known to exist.         !!
+!! If you are looking to use StarGate on 1.13 or 1.14, we suggest you use that for now. !!
+!!                       https://github.com/mejohn/Stargate-Bukkit                      !!
+!!                                                                                      !!
+!!                       We hope to finish this fork in Aug 2019.                       !!
+!!                                                                                      !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+=============
    Updates
 =============
-Please visit http://forum.thedgtl.net for all updates and support!
+Versions 9+ are not fully updated (nor supported) by any developers!
+If you would like an update, feel free to create a pull request or fork.
+
+To contact the LCLO, visit mc-smp.com
 
 =============
  Description
 =============
-This is a port of the Stargate plugin from hMod by Dinnerbone.
-Create gates that allow for instant-teleportation between large distances. Gates can be always-open, or triggered, they can be hidden, or accessible to everybody, they can share a network, or they can be split into clusters.
-This port will import your existing locations.dat file from the hMod Stargate plugin!
-Economy support added back in, only costs are create, destroy and use.
+A fork of PseudoKnight's fork of TheDgtl's port of the Stargate plugin from hMod by Dinnerbone.
+Creates gates that allow for instant-teleportation between large distances.
+Gates can be always-open, or manually triggered; they can be public, or private; and they can share a network, or they can be split into clusters.
+Backwards support is limited; this fork may import existing locations data from previous forks.
+
+This plugin does not currently have economy support.
 
 =============
  Permissions
@@ -24,16 +44,15 @@ stargate.option -- Allow use of all options
   stargate.option.hidden -- Allow use of 'H'idden
   stargate.option.alwayson -- Allow use of 'A'lways-On
   stargate.option.private -- Allow use of 'P'rivate
-  stargate.option.free -- Allow use of 'F'ree
   stargate.option.backwards -- Allow use of 'B'ackwards
   stargate.option.show -- Allow use of 'S'how
   stargate.option.nonetwork -- Allow use of 'N'oNetwork
   stargate.option.random -- Allow use of 'Random' gates
   
 stargate.create -- Allow creating gates on any network (Override all create permissions)
-  stargate.create.personal -- Allow creating gates on network {playername}
+  stargate.create.personal -- Allow creating gates on your network {playername}
   stargate.create.network -- Allow creating gates on any network
-    stargate.create.network.{networkname} -- Allow creating gates on network {networkname}. Set to false to disallow creation on {networkname}
+    stargate.create.network.{networkname} -- Allow creating gates on a specific network {networkname}. Set to false to disallow creation on {networkname}
   stargate.create.gate -- Allow creation of any gate layout
     stargate.create.gate.{gatefile} -- Allow creation of only {gatefile} gates
 
@@ -41,11 +60,6 @@ stargate.destroy -- Allow destruction gates on any network (Orderride all destro
   stargate.destroy.personal -- Allow destruction of gates owned by user only
   stargate.destroy.network -- Allow destruction of gates on any network
     stargate.destroy.network.{networkname} -- Allow destruction of gates on network {networkname}. Set to false to disallow destruction of {networkname}
-
-stargate.free -- Allow free use/creation/destruction of gates
-  stargate.free.use -- Allow free use of Stargates
-  stargate.free.create -- Allow free creation of Stargates
-  stargate.free.destroy -- Allow free destruction of Stargates
   
 stargate.admin -- Allow all admin features (Hidden/Private only so far)
   stargate.admin.private -- Allow use of Private gates not owned by user
@@ -59,19 +73,16 @@ stargate.use -- Everyone
 stargate.create -- Op
 stargate.destroy -- Op
 stargate.option -- Op
-stargate.free -- Op
 stargate.admin -- Op
 
 =============
 Instructions
 =============
 Building a gate:
-    OO 
-   O  O - These are Obsidian blocks. You need 10.
-   O  O - Place a sign on either of these two blocks of Obsidian.
-   O  O
-    OO
-
+[][][]
+[]  []    [] These are double slabs
+[]  []    () This is a block of lapis lazuli
+[]()[]
 Sign Layout:
  - Line 1: Gate Name (Max 12 characters)
  - Line 2: Destination Name [Optional] (Max 12 characters, used for fixed-gates only)
@@ -80,7 +91,6 @@ Sign Layout:
  			'A' for always-on fixed gate
  			'H' for hidden networked gate
  			'P' for a private gate
- 			'F' for a free gate
  			'B' is for a backwards facing gate (You will exit the back)
  			'S' is for showing an always-on gate in the network list
  			'N' is for hiding the network name
@@ -112,17 +122,15 @@ Hidden Gates:
  - Set the 4th line of the stargate sign to 'H' to make it a hidden gate.
  
 Economy Support:
- The latest version of Stargate has support for Vault. Gate creation, destruction and use can all have different costs associated with them. You can also define per-gate layout costs. The default cost is assigned in the config.yml file, while the per-gate costs re defined in the .gate files. To define a certain cost to a gate just add these lines to your .gate file:
-usecost=5
-destroycost=5
-createcost=5
-toowner=true
+ Previous versions of this plugin provided economy support; presently, this fork does not.
+ Gate costs defined in imported .gate files may cause unintended behaviour.
 
 ==============
 Custom Gate Layout
 ==============
 You can create as many gate formats as you want, the gate layouts are stored in plugins/Stargate/gates/
-The .gate file must be laid out a specific way, the first lines will be config information, and after a blank line you will lay out the gate format. Here is the default nether.gate file:
+The .gate file must be laid out a specific way, the first lines will be config information, and after a blank line you will lay out the gate format.
+For contents, see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html. Here is the default nether.gate file:
 
 portal-open=NETHER_PORTAL
 portal-closed=AIR
@@ -147,21 +155,13 @@ default-gate-network - The default gate network
 portal-folder - The folder your portal databases are saved in
 gate-folder - The folder containing your .gate files
 destroyexplosion - Whether to destroy a stargate with explosions, or stop an explosion if it contains a gates controls.
-useeconomy - Whether or not to use Economy
-createcost - The cost to create a stargate
-destroycost - The cost to destroy a stargate (Can be negative for a "refund"
-usecost - The cost to use a stargate
-chargefreedestination - Enable to allow free travel from any gate to a free gate
-freegatesgreen - Enable to make gates that won't cost the player money show up as green
-toowner - Whether the money from gate-use goes to the owner or nobody
 maxgates - If non-zero, will define the maximum amount of gates allowed on any network.
-lang - The language to use (Included languages: en, de)
 destMemory - Whether to set the first destination as the last used destination for all gates
 ignoreEntrance - Set this option to true to not check the entrance of a gate on startup. This is a workaround for snowmen breaking gates.
 handleVehicles - Whether or not to handle vehicles going through gates. Set to false to disallow vehicles (Manned or not) going through gates.
 sortLists - If true, network lists will be sorted alphabetically.
 protectEntrance - If true, will protect from users breaking gate entrance blocks (This is more resource intensive than the usual check, and should only be enabled for servers that use solid open/close blocks)
-signColor: This allows you to specify the color of the gate signs. Valid colors:
+signColor: This allows you to specify the color of the gate signs. Valid colors: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html
 verifyPortals: Whether or not all the non-sign blocks are checked to match the gate layout when a stargate is loaded.
 
 debug - Whether to show massive debug output
@@ -172,12 +172,6 @@ permdebug - Whether to show massive permission debug output
 =======================
 As of 0.6.5 it is possible to customize all of the messages Stargate displays, including the [Stargate] prefix. You can find the strings in plugins/Stargate/lang/en.txt. 
 If a string is removed, or left blank, it will not be shown when the user does the action associated with it.
-There are three special cases when it comes to messages, these are:
-ecoDeduct=Spent %cost%
-ecoRefund=Refunded %cost%
-ecoObtain=Obtained %cost% from Stargate %portal%
-
-As you can see, these three strings have %cost% and %portal% variables in them. These variables are fairly self-explanatory.
 
 The full list of strings is as follows:
 prefix=[Stargate] 
@@ -187,11 +181,6 @@ invalidMsg=Invalid Destination
 blockMsg=Destination Blocked
 denyMsg=Access Denied
 destEmpty=Destination List Empty
-
-ecoDeduct=Deducted %cost%
-ecoRefund=Redunded %cost%
-ecoObtain=Obtained %cost% from Stargate %portal%
-ecoInFunds=Insufficient Funds
 
 createMsg=Gate Created
 createNetDeny=You do not have access to that network
@@ -205,13 +194,25 @@ createConflict=Gate conflicts with existing gate
 =============
  Known Bugs
 =============
-Stargates are stored under player names, not UUIDs. This will be changed in the future.
+Stargates are stored under player names, not UUIDs. This may be changed in future.
 
 =============
   Changes
 =============
-[Version 0.8.0.0] PseudoKnight fork
- - Update for 1.13 compatibility. This changes gate layouts to use new material names instead of numeric ids. You need to update your gate layout configs.
+[Version 0.10.0.X DEV] LCLO/frostalf fork || WORK IN PROGRESS! NOT YET STABLE! USE 0.9.0.0!
+- Started the process of updating to 1.13 & 1.14
+- Moved listeners to their own class files
+- Temporarily disabled multi-language support
+[Version 0.9.0.0] mejohn fork || https://github.com/mejohn/Stargate-Bukkit
+A LIMITED, AUSTERE, YET FUNCTIONAL FORK DESIGNED TO TIE USERS OVER UNTIL A FULLY-FEATURED 1.13/1.14 FORK IS COMPLETE.
+- Upgraded to 1.14
+- Removed Vault dependency
+- Removed economy support
+- Removed permissions support
+- Removed Bungee support
+- Removed debug features
+[Version 0.8.0.0] PseudoKnight fork || https://github.com/PseudoKnight/Stargate-Bukkit
+ - Partial update for 1.13 compatibility; changed to the new MaterialID system instead of numeric ids. You need to update your gate layout configs.
  - Adds "verifyPortals" config option, which sets whether a stargate layout is verified when it is loaded.
 [Version 0.7.9.11] PseudoKnight fork
  - Removed iConomy support. Updated Vault support. Changed setting from "useiconomy" to "useeconomy".
