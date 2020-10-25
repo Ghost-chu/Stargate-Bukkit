@@ -391,7 +391,7 @@ public class Portal {
 		// Call the StargateOpenEvent
 		StargateOpenEvent event = new StargateOpenEvent(openFor, this, force);
         //debug
-        //Bukkit.broadcastMessage("Player, Portal, boolean" + openFor.getName() + ", " + this.getName() + ", " + Boolean.toString(force));
+        //Bukkit.broadcastMessage("Player, Portal, boolean" + openFor.getName() + ", " + Boolean.toString(force));
 		Stargate.server.getPluginManager().callEvent(event);
 		if (event.isCancelled()) return false;
 		force = event.getForce();
@@ -406,7 +406,7 @@ public class Portal {
 
 		isOpen = true;
 		openTime = System.currentTimeMillis() / 1000;
-        //Bukkit.broadcastMessage("start of arrays openlist & activeList");
+        Bukkit.broadcastMessage("start of arrays openlist & activeList");
 		Stargate.openList.add(this);
 		Stargate.activeList.remove(this);
 
@@ -418,11 +418,13 @@ public class Portal {
 			// Only open dest if it's not-fixed or points at this gate
 			if (!random && end != null && (!end.isFixed() || end.getDestinationName().equalsIgnoreCase(getName())) && !end.isOpen()) {
 				end.open(openFor, false);
-                //Bukkit.broadcastMessage("End Destination Before: " + end.getDestination().getName());
+                Bukkit.broadcastMessage("End Destination Before: " + end.getDestinationName());
+                Bukkit.broadcastMessage(" Other Dest: " + getDestination());
 				end.setDestination(this);
-                //Bukkit.broadcastMessage("End Destination After: " + end.getDestination().getName());
+                Bukkit.broadcastMessage("End Destination After: " + end.getName());
+                Bukkit.broadcastMessage(" Other Dest: " + getDestination());
                 //debug
-                //Bukkit.broadcastMessage("End Portal Verified: " + Boolean.toString(end.isVerified()));
+                Bukkit.broadcastMessage("End Portal Verified: " + Boolean.toString(end.isVerified()));
 				if (end.isVerified()) end.drawSign();
 			}
 		}
