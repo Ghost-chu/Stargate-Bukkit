@@ -391,7 +391,7 @@ public class Portal {
 		// Call the StargateOpenEvent
 		StargateOpenEvent event = new StargateOpenEvent(openFor, this, force);
         //debug
-        Bukkit.broadcastMessage("Player, Portal, boolean" + openFor.getName() + ", " + this.getName() + ", " + Boolean.toString(force));
+        //Bukkit.broadcastMessage("Player, Portal, boolean" + openFor.getName() + ", " + this.getName() + ", " + Boolean.toString(force));
 		Stargate.server.getPluginManager().callEvent(event);
 		if (event.isCancelled()) return false;
 		force = event.getForce();
